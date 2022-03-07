@@ -14,7 +14,6 @@
 </select>
 </div>
 </div>
-
 <div class="col-6 border p-3"> 
 <h3 class="text-primary">Product Summary:</h3>
 <hr />
@@ -30,7 +29,29 @@ Property Selected: @selectedProperty <br />
 <br />
 <br />
 </div>
-
+</div >
+<div class="col-12 pt-4">
+    <h2 class="text-success">Product Table</h2>
+  <table class="table table-striped">
+      <tbody>
+        @foreach(var p in products)
+        {
+            <tr>
+                <td><input @bind-value="@p.Name" type="text" @bind-value:event="oninput"/></td>
+                <td><input type="text" @bind-value="@p.Price" @bind-value:event="oninput"/></td>
+                <td><input type="checkbox" checked="@(p.IsActive? "checked":null)" @bind-value="@p.IsActive" @bind-value:event="oninput" /></td>
+            </tr>
+            
+        }
+        </tbody>
+    </table>
+</div>
+<div>
+    <h3>Product Summary</h3>
+    @foreach(var p in products)
+    {
+        <p>@p.Name [@p.Price] is @(p.IsActive? "Active" :"Inactive")</p>
+    }
 </div>
 
 @code {
@@ -40,13 +61,49 @@ Property Selected: @selectedProperty <br />
             Id = 1,
             Name = "Roses",
             IsActive = true,
-            Price = 11.99,
+            Price = 13,
             ProductProperties = new List<ProductProp>()
             {
                 new ProductProp() { Id = 1, Key = "Color", Value = "Black" },
                 new ProductProp() { Id = 2, Key = "Flavor", Value = "Jasmine" },
                 new ProductProp() { Id = 3, Key = "Size", Value = "20oz" }
             }
-             
         };
+
+    List<Product> products = new();
+
+
+    protected override void OnInitialized()
+    {
+        products.Add(
+            new Product
+                {
+
+                    Id = 2,
+                    Name = "Name",
+                    IsActive = true,
+                    Price = 15,
+                    ProductProperties = new List<ProductProp>()
+                {
+                new ProductProp() { Id = 1, Key = "Color", Value = "Black" },
+                new ProductProp() { Id = 2, Key = "Flavor", Value = "Jasmine" },
+                new ProductProp() { Id = 3, Key = "Size", Value = "20oz" }
+                }
+                });
+
+        products.Add(
+            new()
+                {
+                    Id = 3,
+                    Name = "Eman",
+                    IsActive = true,
+                    Price = 11.99,
+                    ProductProperties = new List<ProductProp>()
+                    {
+                new ProductProp() { Id = 1, Key = "Color", Value = "Black" },
+                new ProductProp() { Id = 2, Key = "Flavor", Value = "Jasmine" },
+                new ProductProp() { Id = 3, Key = "Size", Value = "20oz" }
+                    }
+                }); 
+    }
 }

@@ -1,0 +1,67 @@
+﻿@page "/blazor/demoproduct"
+
+<h2 class="text-primary">Demo Product</h2>
+<div class="border p-2 mt-2" style="background:azure">
+    <div class="row">
+        @foreach(var p in products)
+        {
+           <div class="p-2 col-5">
+               <h4 class="text-secondary">Product-@p.Id</h4>
+               Name- @p.Name <br/> 
+               Show Properties:
+               <input type="checkbox" @bind-value="@p.IsActive" checked="@(p.IsActive? "checked":null)" />
+                @if (p.IsActive)
+                {
+                    @foreach(var props in p.ProductProperties)
+                    {
+                        <p>@props.Key - @props.Value</p>
+                    }
+                }
+                <br>
+                  
+        <input type="button" class="btn btn-danger" style="width:100px" value="Delete"/> 
+        <input type="button" class="btn btn-success" style="width:100px" value="Edit"/>
+            </div>
+        }
+     
+</div>
+</div>
+
+@code {
+    List<Product> products = new();
+
+
+    protected override void OnInitialized()
+    {
+        products.Add(
+            new Product
+                {
+
+                    Id = 2,
+                    Name = "Chair",
+                    IsActive = true,
+                    Price = 15,
+                    ProductProperties = new List<ProductProp>()
+                {
+                new ProductProp() { Id = 1, Key = "Color", Value = "Black" },
+                new ProductProp() { Id = 2, Key = "Flavor", Value = "Jasmine" },
+                new ProductProp() { Id = 3, Key = "Size", Value = "20oz" }
+                }
+                });
+
+        products.Add(
+            new()
+                {
+                    Id = 3,
+                    Name = "Headphones",
+                    IsActive = true,
+                    Price = 11.99,
+                    ProductProperties = new List<ProductProp>()
+                    {
+                new ProductProp() { Id = 1, Key = "Color", Value = "Black" },
+                new ProductProp() { Id = 2, Key = "Flavor", Value = "Jasmine" },
+                new ProductProp() { Id = 3, Key = "Size", Value = "20oz" }
+                    }
+                }); 
+    }
+}
