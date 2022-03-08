@@ -1,5 +1,5 @@
 ﻿@page "/blazor/routing/{parameter1}"
-@page "/blazor/routing/{parameter1}/{parameter2}"
+@page "/blazor/routing/{parameter1:int}/{parameter2:int}"
 @page "/blazor/routing"
 @page "/routing"
 
@@ -10,7 +10,8 @@
 <h4>Parameter 1 : @Parameter1</h4>
 <h4>Parameter 2 : @Parameter2</h4>
 
-<a href="routing?Param1=Web&Param2=Blazor" class="btn btn-primary">Navigate to query parameters.</a>
+@*<a href="routing?Param1=Web&Param2=Blazor" class="btn btn-primary">Navigate to query parameters.</a>*@
+<button  class="btn btn-primary" @onclick="NavigateToQueryParam">Navigate to query parameters.</button>
 <button class="btn btn-success" @onclick="LoadParameters">Load Parameters</button>
 <br />
 <h3>Query string parameters:</h3>
@@ -19,10 +20,10 @@
 
 @code {
     [Parameter]
-    public string Parameter1 { get; set; }
+    public int Parameter1 { get; set; }
 
     [Parameter]
-    public string Parameter2 { get; set; }
+    public int Parameter2 { get; set; }
 
     public string Param1 { get; set; }
     public string Param2 { get; set; }
@@ -34,5 +35,10 @@
         var queryParam = System.Web.HttpUtility.ParseQueryString(absoluteUri.Query);
         Param1 = queryParam["Param1"];
         Param2 = queryParam["Param2"];
+    }
+
+    private void NavigateToQueryParam()
+    {
+        _NavigationManager.NavigateTo("routing?Param1=Web&Param2=Blazor");
     }
 }
