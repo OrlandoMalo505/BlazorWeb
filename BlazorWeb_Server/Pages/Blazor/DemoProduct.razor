@@ -1,27 +1,13 @@
 ﻿@page "/blazor/demoproduct"
 
 <h2 class="text-primary">Demo Product</h2>
+<p>Favourites Total: @SelectedFavouriteCount</p><br />
+<p>Last Selected Product: @LastSelected </p>
 <div class="border p-2 mt-2" style="background:azure">
     <div class="row">
         @foreach(var p in products)
         {
-           <div class="p-2 col-5">
-               <h4 class="text-secondary">Product-@p.Id</h4>
-               Name- @p.Name <br/> 
-               Show Properties:
-               <input type="checkbox" @bind-value="@p.IsActive" checked="@(p.IsActive? "checked":null)" />
-                @if (p.IsActive)
-                {
-                    @foreach(var props in p.ProductProperties)
-                    {
-                        <p>@props.Key - @props.Value</p>
-                    }
-                }
-                <br>
-                  
-        <input type="button" class="btn btn-danger" style="width:100px" value="Delete"/> 
-        <input type="button" class="btn btn-success" style="width:100px" value="Edit"/>
-            </div>
+           <_IndividualProduct Product="p" OnFavouriteSelection="FavouriteCountUpdate" OnLastSelected="LastSelectedCount"/>
         }
      
 </div>
@@ -29,7 +15,8 @@
 
 @code {
     List<Product> products = new();
-
+    private int SelectedFavouriteCount { get; set; } = 0;
+    private string LastSelected { get; set; } = "";
 
     protected override void OnInitialized()
     {
@@ -38,7 +25,7 @@
                 {
 
                     Id = 2,
-                    Name = "Chair",
+                    Name = "Midnight Blaze",
                     IsActive = true,
                     Price = 15,
                     ProductProperties = new List<ProductProp>()
@@ -53,7 +40,7 @@
             new()
                 {
                     Id = 3,
-                    Name = "Headphones",
+                    Name = "Blossom Lily",
                     IsActive = true,
                     Price = 11.99,
                     ProductProperties = new List<ProductProp>()
@@ -64,4 +51,20 @@
                     }
                 }); 
     }
+
+    protected void FavouriteCountUpdate(bool isSelected)
+    {
+        if (isSelected)
+        {
+            SelectedFavouriteCount++;
+        }
+        else
+            SelectedFavouriteCount--;
+    }
+
+    protected void LastSelectedCount(string productName)
+    {
+        LastSelected = productName;
+    }
+
 }
