@@ -1,0 +1,38 @@
+﻿@page "/blazor/routing/{parameter1}"
+@page "/blazor/routing/{parameter1}/{parameter2}"
+@page "/blazor/routing"
+@page "/routing"
+
+@inject NavigationManager _NavigationManager
+
+<h3>Routing</h3>
+
+<h4>Parameter 1 : @Parameter1</h4>
+<h4>Parameter 2 : @Parameter2</h4>
+
+<a href="routing?Param1=Web&Param2=Blazor" class="btn btn-primary">Navigate to query parameters.</a>
+<button class="btn btn-success" @onclick="LoadParameters">Load Parameters</button>
+<br />
+<h3>Query string parameters:</h3>
+<h4>Param 1: @Param1</h4>
+<h4>Param 2: @Param2</h4>
+
+@code {
+    [Parameter]
+    public string Parameter1 { get; set; }
+
+    [Parameter]
+    public string Parameter2 { get; set; }
+
+    public string Param1 { get; set; }
+    public string Param2 { get; set; }
+
+
+    private void LoadParameters()
+    {
+        var absoluteUri = new Uri(_NavigationManager.Uri);
+        var queryParam = System.Web.HttpUtility.ParseQueryString(absoluteUri.Query);
+        Param1 = queryParam["Param1"];
+        Param2 = queryParam["Param2"];
+    }
+}

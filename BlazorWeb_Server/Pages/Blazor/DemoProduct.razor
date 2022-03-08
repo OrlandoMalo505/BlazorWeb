@@ -7,7 +7,9 @@
     <div class="row">
         @foreach(var p in products)
         {
-           <_IndividualProduct Product="p" OnFavouriteSelection="FavouriteCountUpdate" OnLastSelected="LastSelectedCount"/>
+           <_IndividualProduct Product="p" OnFavouriteSelection="FavouriteCountUpdate" OnLastSelected="LastSelectedCount">
+               <ProductContent>RF from Parent- #1 #2</ProductContent>
+           </_IndividualProduct>
         }
      
 </div>
