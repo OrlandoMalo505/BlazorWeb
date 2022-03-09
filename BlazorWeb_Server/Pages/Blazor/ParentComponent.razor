@@ -2,7 +2,7 @@
 <h3>Parent Child Relation</h3>
 <CascadingValue Value="@MessageForGrandChild" Name="message">
     <CascadingValue Value="@LuckyNumber" Name="lucky"> 
-<_ChildComponent Title="This is a title passed as parameter." OnButtonClick="ShowMessage">
+<_ChildComponent @ref="childComponent" Title="This is a title passed as parameter." OnButtonClick="ShowMessage">
     <ChildContent> hello this is render fragment</ChildContent>  
 </_ChildComponent>
 <p><b>@messageText</b></p>
@@ -10,8 +10,13 @@
 </CascadingValue>
 </CascadingValue>
 
+<div class="row">
+    <button class="btn btn-success" @onclick="()=>childComponent.ToastrSuccess()">Show Toastr</button>
+</div>
+
 
 @code {
+    public _ChildComponent childComponent { get; set; }
     public string MessageForGrandChild = "hello from parent";
     public string LuckyNumber = "7";
     public string messageText = "";
