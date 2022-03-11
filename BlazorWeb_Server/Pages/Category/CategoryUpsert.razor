@@ -1,4 +1,8 @@
 ﻿@page "/category/create"
+@page "/category/edit/{id:int}"
+
+@inject ICategoryRepository _categoryRepository
+@inject NavigationManager _navigationManager
 
 <div class="row my-2">
     <h3 class="card-title text-primary mb-3 ml-3">@Title Category</h3>
@@ -23,11 +27,41 @@
 
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
     private CategoryDTO Category { get; set; } = new CategoryDTO();
     public string Title { get; set; } = "Create";
+    public bool IsLoading { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(Id == 0)
+        {
+            IsLoading = false;
+        }
+        else
+        {      
+            await Task.Run(LoadCategory);
+        }
+    }
+
+    private void LoadCategory()
+    {
+        Category = _categoryRepository.Get(Id);
+        IsLoading = false;
+        Title = "Update";
+    }
 
     private void UpsertCategory()
     {
-        Category.Name = "Button clicked!";
+        if(Category.Id == 0)
+        {
+            _categoryRepository.Create(Category);  
+        }
+        else
+        {
+            _categoryRepository.Update(Category);
+        }
+        _navigationManager.NavigateTo("/category");
     }
 }
