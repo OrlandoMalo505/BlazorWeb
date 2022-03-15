@@ -22,10 +22,10 @@ namespace Business.Repository
             _db = db;
             _mapper = mapper;
         }
-        public async Task< CategoryDTO> Create(CategoryDTO objDTO)
+        public async Task<CategoryDTO> Create(CategoryDTO objDTO)
         {
             Category category = _mapper.Map<CategoryDTO, Category>(objDTO);
-            category.CreatedDate = DateTime.Now;    
+            category.CreatedDate = DateTime.Now;
             _db.Categories.Add(category);
             await _db.SaveChangesAsync();
 
@@ -35,19 +35,19 @@ namespace Business.Repository
         public async Task<int> Delete(int id)
         {
             var category = await _db.Categories.FirstOrDefaultAsync(c => c.Id == id);
-            if(category != null)
+            if (category != null)
             {
                 _db.Categories.Remove(category);
                 return await _db.SaveChangesAsync();
             }
             return 0;
-            
+
         }
 
         public async Task<CategoryDTO> Get(int id)
         {
             var category = await _db.Categories.SingleOrDefaultAsync(c => c.Id == id);
-            if(category != null)
+            if (category != null)
             {
                 return _mapper.Map<Category, CategoryDTO>(category);
             }
@@ -55,7 +55,7 @@ namespace Business.Repository
 
         }
 
-        public IEnumerable<CategoryDTO> GetAll()
+        public async Task<IEnumerable<CategoryDTO>> GetAll()
         {
             return _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_db.Categories);
         }
@@ -63,7 +63,7 @@ namespace Business.Repository
         public async Task<CategoryDTO> Update(CategoryDTO objDTO)
         {
             var categoryFromDb = await _db.Categories.FirstOrDefaultAsync(c => c.Id == objDTO.Id);
-            if(categoryFromDb != null)
+            if (categoryFromDb != null)
             {
                 categoryFromDb.Name = objDTO.Name;
                 _db.Categories.Update(categoryFromDb);
@@ -74,9 +74,6 @@ namespace Business.Repository
 
         }
 
-        Task<IEnumerable<CategoryDTO>> ICategoryRepository.GetAll()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

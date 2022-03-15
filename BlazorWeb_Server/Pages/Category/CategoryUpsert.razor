@@ -31,25 +31,33 @@
     public int Id { get; set; }
     private CategoryDTO Category { get; set; } = new CategoryDTO();
     public string Title { get; set; } = "Create";
-    public bool IsLoading { get; set; } = true;
+    public bool IsLoading { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(Id == 0)
+        if (firstRender)
         {
-            IsLoading = false;
-        }
-        else
-        {      
-            await Task.Run(LoadCategory);
+
+
+            if (Id == 0)
+            {
+                IsLoading = false;
+            }
+            else
+            {
+                await LoadCategory();
+            }
         }
     }
 
     private async Task LoadCategory()
     {
+        IsLoading = true;
+        StateHasChanged();
         Category = await _categoryRepository.Get(Id);
         IsLoading = false;
         Title = "Update";
+        StateHasChanged();
     }
 
     private async Task UpsertCategory()

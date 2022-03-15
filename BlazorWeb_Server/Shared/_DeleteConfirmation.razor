@@ -10,15 +10,27 @@
             <div class="modal-body">
                 Are you sure you want to delete
             </div>
+            @if(IsParentLoading){
+                <div class="modal-footer">
+                <button class="btn btn-secondary" disabled data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" disabled>Processing...</button>
+            </div>
+            }
+            else
+            {
             <div class="modal-footer">
                 <button class="btn btn-secondary" @onclick="() => OnConfirmationDelete(false)" data-bs-dismiss="modal">Cancel</button>
                 <button class="btn btn-danger" @onclick="() => OnConfirmationDelete(true)">Delete</button>
             </div>
+            }
         </div>
     </div>
 </div>
 
 @code{
+    [Parameter]
+    public bool IsParentLoading { get; set; }
+
     [Parameter]
     public EventCallback<bool> ConfirmationChanged { get; set; }
 
